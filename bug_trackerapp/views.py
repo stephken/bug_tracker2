@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth import login, logout, authenticate
 from bug_trackerapp.models import My_User, Ticket
 from django.contrib.auth.decorators import login_required
@@ -69,7 +69,7 @@ def in_progress_view(request, ticket_id):
     in_progress = Ticket.objects.get(id=ticket_id)
     in_progress.ticket_status_choices = "IP"
     in_progress.completed_by = None
-
+    in_progress.assigned_to = request.user
     in_progress.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     
@@ -92,7 +92,6 @@ def invalid_view(request, ticket_id):
 def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
-        # breakpoint()
         if form.is_valid():
             data=form.cleaned_data
             user=authenticate(

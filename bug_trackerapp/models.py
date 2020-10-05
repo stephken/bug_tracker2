@@ -5,7 +5,12 @@ from django.utils import timezone
 # Create your models here.
 
 class My_User(AbstractUser):
-    pass
+    company = models.CharField(max_length=100, blank=True, null=True)
+    REQUIRED_FIELDS = ["company"]
+
+
+    def __str__(self):
+        return self.username
 
 class Ticket(models.Model):
     description = models.TextField()
@@ -14,9 +19,9 @@ class Ticket(models.Model):
     
     time_date = models.DateTimeField(default=timezone.now)
     
-    assigned_to = models.ForeignKey(My_User, on_delete=models.CASCADE, related_name="assigned_to", blank=True, null=True)
+    assigned_to = models.ForeignKey(My_User, on_delete=models.CASCADE, related_name="assigned_to")
     
-    completed_by = models.ForeignKey(My_User, on_delete=models.CASCADE, related_name="completed_by", blank=True, null=True)
+    completed_by = models.ForeignKey(My_User, on_delete=models.CASCADE, related_name="completed_by")
     
     assigned_by = models.ForeignKey(My_User, on_delete=models.CASCADE, related_name="assigned_by")
     
@@ -33,5 +38,5 @@ class Ticket(models.Model):
     ticket_status_choices = models.CharField(max_length=2, choices=TICKET_STATUS_CHOICES, default=NEW,)
     
     def __str__(self):
-        return self.
+        return self.title
     
