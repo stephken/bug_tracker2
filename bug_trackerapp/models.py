@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
 # Create your models here.
-
+# got help from NIKAL
 class My_User(AbstractUser):
     company = models.CharField(max_length=100, blank=True, null=True)
     REQUIRED_FIELDS = ["company"]
